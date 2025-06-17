@@ -1,0 +1,57 @@
+## Ignore build results
+bin/
+obj/
+out/
+
+## Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Ignore Rider files
+.idea/
+
+## Ignore VSCode files
+.vscode/
+
+## Ignore ASP.NET Core secrets
+secrets.json
+
+## Ignore local database files
+*.db
+*.mdf
+*.ldf
+
+## Ignore EF Core migrations if not shared
+# Remove this line if you want to track migrations
+Migrations/
+
+## Ignore published output
+publish/
+wwwroot/
+
+## Ignore logs
+*.log
+logs/
+
+## Ignore environment configuration
+appsettings.Development.json
+appsettings.Local.json
+
+## Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+## Ignore JetBrains Rider and Resharper files
+*.DotSettings.user
+.ReSharper*/
+
+## Ignore Visual Studio Code's Workspace Storage
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+
+## Ignore NCrunch (test runner)
+.ncrunchproject
+.ncrunc
