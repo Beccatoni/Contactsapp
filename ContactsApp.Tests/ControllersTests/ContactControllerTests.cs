@@ -1,0 +1,74 @@
+using ContactsApp.Api.Controllers;
+using ContactsApp.Api.Models;
+using ContactsApp.Api.Services;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+
+namespace ContactsApp.Tests.ControllersTests;
+
+public class ContactControllerTests
+{
+    private Mock<IContactService> _mockService;
+
+    private ContactsController _controller;
+
+    [SetUp]
+    public void Setup()
+    {
+        _mockService = new Mock<IContactService>();
+        _controller = new ContactsController(_mockService.Object);
+    }
+
+    [Test]
+    public async Task GetAllAsync_ShouldReturnAllContacts()
+    {
+       // Arrange
+       var expected = new List<Contact>
+       {
+           new() { Id = 1, FullName = "Betty James", Email = "BettyJames@gmail.com", Phone = "0843975834" },
+           new(){Id = 2, FullName = "Edi Jack", Email = "Edi@gmail.com", Phone = "08284975834"}
+       };
+
+       _mockService.Setup(s => s.GetAllAsync()).ReturnsAsync(expected);
+       
+       // Act
+       var result = await _controller.GetAllAsync();
+       
+       // Assert
+       var OkResult = result.Result as OkObjectResult;
+       OkResult.Should().NotBeNull();
+       OkResult.Value.Should().BeEquivalentTo((expected));
+    }
+
+    [Test]
+    public async Task GetContactByIdAsync_ShouldReturnContact_WhenExists()
+    {
+        // Arrange
+        var contact = new Contact
+        {
+            Id = 1, FullName = "Alice Ineza", Email = "aliceineza@gmail.com", Phone = "0789437548"
+        };
+        
+        // Act
+        var result = await _controller.GetContactByIdAsync(1);
+        
+        // Assert
+        var okResult = result.Result as OkObjectResult;
+        okResult.Should().NotBeNull();
+        okResult.Value.Should().BeEquivalentTo(contact);
+    }
+
+    [Test]
+    public async Task GetContactByIdAsync_ShouldReturnNotFound_WhenContactDoesNotExist()
+    {
+        // Arrange
+        _mockService.Setup(s => s.GetContactByIdAsync(4)).ReturnsAsync((Contact?)null);
+        
+        // Act
+        var result = 
+    }
+   
+    
+
+}

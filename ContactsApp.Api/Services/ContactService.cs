@@ -1,5 +1,6 @@
 using ContactsApp.Api.DTOs;
 using ContactsApp.Api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ContactsApp.Api.Services;
 
@@ -30,7 +31,9 @@ public class ContactService : IContactService
         {
             FullName = contactDto.FullName,
             Email = contactDto.Email,
-            Phone = contactDto.Phone
+            Phone = contactDto.Phone,
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
         };
 
         await _repository.CreateContactAsync(newContact);
@@ -38,8 +41,10 @@ public class ContactService : IContactService
     public async Task UpdateContactAsync(int id, UpdateContactDto contactDto)
     {
         var contact = await _repository.GetContactByIdAsync(id);
+       
         contact.FullName = contactDto.FullName;
         contact.Email = contactDto.Email;
+        contact.UpdatedAt = DateTime.Now;
         await _repository.UpdateContactAsync(contact, id);
     }
 

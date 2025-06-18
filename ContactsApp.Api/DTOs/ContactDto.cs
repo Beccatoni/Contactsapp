@@ -20,17 +20,17 @@ public class CreateContactDto
     [EmailAddress]
     public string Email { get; set; }
     
-    [MinLength(1)]
-    public List<string> Phone { get; set; }
+    [Required]
+    public string Phone { get; set; }
 }
 
 public class UpdateContactDto
 {
-    public string FullName { get; set; } = string.Empty;
+    public string? FullName { get; set; }
 
-    public string Email { get; set; } = string.Empty;
+    public string? Email { get; set; }
 
-    public string Phone { get; set; } = string.Empty;
-
-    public string Address { get; set; } = string.Empty;
+    public string? Phone { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
 }
