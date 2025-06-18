@@ -1,4 +1,5 @@
 using ContactsApp.Api.Controllers;
+using ContactsApp.Api.DTOs;
 using ContactsApp.Api.Models;
 using ContactsApp.Api.Services;
 using FluentAssertions;
@@ -66,7 +67,34 @@ public class ContactControllerTests
         _mockService.Setup(s => s.GetContactByIdAsync(4)).ReturnsAsync((Contact?)null);
         
         // Act
-        var result = 
+        var result = await _controller.GetContactByIdAsync(4);
+        
+        // Assert
+        result.Result.Should().BeOfType<NotFoundResult>();
+    }
+
+    [Test]
+    public async Task CreateContactAsync_ShouldReturnSuccess_WhenValid()
+    {
+        //Arrange
+        _controller.ModelState.AddModelError("Email", "Required");
+        var dto = new CreateContactDto { FullName = "Jossy" };
+        
+        //Act
+        var result = await _controller.CreateContactAsync(dto);
+        
+        //Assert
+        result.Result.Should().BeOfType<BadRequestObjectResult>();
+
+    }
+
+    [Test]
+    public async Task UpdateContactAsync_ShouldReturnSuccess_WhenValid()
+    {
+        // Arrange
+        var dto = new UpdateContactDto { FullName = "Jack Jill", Phone = "098345673", Email = "jack@gmail.com" };
+        
+        // Arrange
     }
    
     

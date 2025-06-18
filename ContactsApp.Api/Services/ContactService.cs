@@ -32,8 +32,8 @@ public class ContactService : IContactService
             FullName = contactDto.FullName,
             Email = contactDto.Email,
             Phone = contactDto.Phone,
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
         await _repository.CreateContactAsync(newContact);
@@ -44,7 +44,7 @@ public class ContactService : IContactService
        
         contact.FullName = contactDto.FullName;
         contact.Email = contactDto.Email;
-        contact.UpdatedAt = DateTime.Now;
+        contact.UpdatedAt = DateTime.UtcNow;
         await _repository.UpdateContactAsync(contact, id);
     }
 
