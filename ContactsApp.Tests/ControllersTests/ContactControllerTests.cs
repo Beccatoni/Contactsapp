@@ -50,6 +50,7 @@ public class ContactControllerTests
         {
             Id = 1, FullName = "Alice Ineza", Email = "aliceineza@gmail.com", Phone = "0789437548"
         };
+        _mockService.Setup(s => s.GetContactByIdAsync(1)).ReturnsAsync(contact);
         
         // Act
         var result = await _controller.GetContactByIdAsync(1);
@@ -57,7 +58,7 @@ public class ContactControllerTests
         // Assert
         var okResult = result.Result as OkObjectResult;
         okResult.Should().NotBeNull();
-        okResult.Value.Should().BeEquivalentTo(contact);
+        okResult!.Value.Should().BeEquivalentTo(contact);
     }
 
     [Test]
@@ -95,6 +96,38 @@ public class ContactControllerTests
         var dto = new UpdateContactDto { FullName = "Jack Jill", Phone = "098345673", Email = "jack@gmail.com" };
         
         // Arrange
+        var result = await _controller.UpdateContactAsync(1, dto);
+        
+        // Assert
+        var okResult = result.Result as OkObjectResult;
+        okResult!.Value.Should().Be("Contact updated successfully");
+        _mockService.Verify(s=> s.UpdateContactAsync(1, dto), Times.Once);
+        
+    }
+    [Test]
+    public async Task UpdateContactAsync_ShouldReturnBadRequest_WhenModelStateInvalid()
+    {
+        // Arrange
+        _controller.ModelState.AddModelError("FullName", "Required");
+        var dto = new UpdateContactDto { FullName = "" };
+
+        // Act
+        var result = await _controller.UpdateContactAsync(1, dto);
+
+        // Assert
+        result.Result.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Test]
+    public async Task DeleteAsync_ShouldReturnSuccess()
+    {
+        // Act
+        var result = await _controller.DeleteAsync(1);
+        
+        //Assert
+        var okResult = result.Result as OkObjectResult;
+        okResult!.Value.Should().Be("Contact deleted successfully");
+        _mockService.Verify(s=> s.DeleteAsync(1), Times.Once);
     }
    
     
